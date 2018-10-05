@@ -176,9 +176,9 @@ def generate_config(user_opt):
         'master': {
           'config': {
             'cloud_init_file': 'cloud-init.cls',
-            'ds_cloud_iso_path': 'caasp-pyvomi/caasp-master-pyvomi-master.iso',
+            'ds_cloud_iso_path': 'caasp-pyvomi/caasp-master-pyvomi.iso',
             'instance_id': 'master',
-            'iso_filename': 'caasp-master-pyvomi-master.iso',
+            'iso_filename': 'caasp-master-pyvomi.iso',
             'path': '/tmp/3772b45d891d0f9d14ddef20c3fd03db/master',
             'stack_hash': '3772b45d891d0f9d14ddef20c3fd03db',
             'stack_name': 'pyvomi'},
@@ -197,7 +197,7 @@ def generate_config(user_opt):
 
         conf_dict[role]["config"]["cloud_init_file"] = cloud_init_file
 
-        iso_filename = "{0}-{1}.iso".format(node_name, role)
+        iso_filename = "{0}.iso".format(node_name)
         conf_dict[role]["config"]["iso_filename"] = iso_filename
         conf_dict[role]["config"]["instance_id"] = role
 
@@ -1049,10 +1049,11 @@ def destroy(vsphere, conf):
 
 def get_vm_ip(vm_obj, timeout, sleep):
     vm_ip = None
+    count = timeout
     Log.info("waiting IP address for virtual machine: {0}".format(vm_obj.name))
-    while vm_ip is None and timeout > 0:
+    while vm_ip is None and count > 0:
         vm_ip = vm_obj.get_ip()
-        timeout -= 5
+        count -= 5
         time.sleep(sleep)
         if vm_ip:
             return vm_ip
