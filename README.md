@@ -3,16 +3,21 @@
 Deploy CaaSP on VMware vSphere
 
 **WORK IN PROGRESS**
+
 **WORK IN PROGRESS**
+
 **WORK IN PROGRESS**
 
 TODO:
 
-* Create plan action to check the deployment before actually deploy
-* Change project structure
-* Improve outputs
-* List vcenter privileges required for a user
-* Improve Documentation
+* [fix] change vm location when clone
+* [enhancement] Create plan action to check the deployment before actually deploy
+* [enhancement] Change project structure
+* [enhancement] Improve outputs (color, formating and duration)
+* [documentation] Improve Documentation
+* [documentation] List vcenter privileges required for a user
+
+
 
 # Requirements
 

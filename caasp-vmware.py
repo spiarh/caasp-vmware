@@ -119,7 +119,7 @@ def load_yaml(yaml_file):
 def get_user_opt(args):
     """ Merge options from file and from cli """
     if not args.var_file:
-        args.var_file = "caasp-vmware.vars"
+        args.var_file = "caasp-vmware.yaml"
 
     user_opt = load_yaml(args.var_file)
     # override values if argument from command line
@@ -1007,7 +1007,7 @@ def deploy(vsphere, conf):
     for vm_config in conf["admin"]["vmguests"]:
         vm = VMachine(vsphere, conf["parameters"],
                       conf["admin"]["config"], vm_config)
-        vm.deploy_from_template()
+        vm.deploy_from_template(create_template=False)
 
         # Retrieve Admin IP address
         admin_ip = get_vm_ip(vm, timeout=120, sleep=20)
@@ -1019,7 +1019,7 @@ def deploy(vsphere, conf):
         for vm_config in conf[r]["vmguests"]:
             vm = VMachine(vsphere, conf["parameters"],
                           conf[r]["config"], vm_config)
-            vm.deploy_from_template(admin_ip)
+            vm.deploy_from_template(create_template=False, admin_ip=admin_ip)
 
     if conf["parameters"]["media_type"] is not "iso":
         generate_state_file(vsphere, conf)
