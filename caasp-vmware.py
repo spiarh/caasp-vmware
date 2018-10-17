@@ -908,7 +908,7 @@ class VMachine(object):
 
     def clone_vm(self):
         """ Clone VM from a previously created template,
-        template name == vm_name without last 3 digits """
+        template_name == vm_name without last 3 digits """
         Log.subtask("clone virtual machine")
         Log.info("- source: {0}".format(self.template_name))
         Log.info("- destination: {0}".format(self.name))
@@ -918,7 +918,9 @@ class VMachine(object):
             self._check_media()
 
             vm_clone_spec = vim.vm.CloneSpec(
-                location=vim.vm.RelocateSpec(pool=self.resource_pool),
+                location=vim.vm.RelocateSpec(
+                    datastore=self.datastore,
+                    pool=self.resource_pool),
                 powerOn=False,
                 template=False)
 
