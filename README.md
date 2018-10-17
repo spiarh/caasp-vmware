@@ -10,7 +10,6 @@ Deploy CaaSP on VMware vSphere
 
 TODO:
 
-* [fix] change vm location when clone
 * [enhancement] Create plan action to check the deployment before actually deploy
 * [enhancement] Change project structure
 * [enhancement] Improve outputs (color, formating and duration)
