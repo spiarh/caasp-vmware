@@ -798,11 +798,13 @@ class VMachine(object):
 
             virtual_eth_spec = vim.vm.device.VirtualDeviceSpec(device=virtual_eth_dev,
                                                                operation=device_operation)
+            # Add disk.enableUUID=1
+            enable_uuid = vim.option.OptionValue(key="disk.enableUUID", value=1)
 
             vm_spec = vim.vm.ConfigSpec(
                 name=vm_name, guestId=self.guest_id,
                 memoryMB=self.ram, numCPUs=self.cpu,
-                files=vmx_file,
+                extraConfig=[enable_uuid], files=vmx_file,
                 deviceChange=[virtual_ide_controller_spec,
                               virtual_ide_spec, virtual_eth_spec, virtual_cdrom_spec],
                 version="vmx-11")
