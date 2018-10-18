@@ -1,9 +1,6 @@
 language: python
 
-python:
-         - 2.7
-
 install:
-        - pip install pytest pylint 
+        - pip3 install pyvmomi==6.7.0.2018.9 pyyaml pytest pylint
 
 script: pylint --errors-only *.py
