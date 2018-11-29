@@ -36,7 +36,7 @@ $ export VC_PASSWORD=password
 Or set into file if you are using the *Docker image*:
 
 ```console
-$ echo > ./vsphere-secrets <<EOF
+$ cat > ./vsphere-secrets <<EOF
 VC_HOST=vcenter.example.com
 VC_USERNAME=user@vcenter.example.com
 VC_PASSWORD=password
@@ -89,7 +89,7 @@ File option | CLI option | Action | Description | Default
 File option | CLI option | Action | Description | Default
 ------------|------------|--------|-------------|--------
 `admin_cloud_init` | --admin-cloud-init | deploy | Local cloud-init config file for the admin node | `cloud-init.adm`
-`node_cloud_init` | --node-cloud-init | deploy | | Local cloud-init config file for the master/worker nodes | `cloud-init.cls`
+`node_cloud_init` | --node-cloud-init | deploy | Local cloud-init config file for the master/worker nodes | `cloud-init.cls`
 
 *vCenter*
 
