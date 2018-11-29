@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument("--var-file", nargs="?", required=False, action="store",
                         help="Deployment customization file")
     parser.add_argument("--stack-name", nargs="?", required=False, action="store",
-                        help="Name of the stack to deploy")
+                        help="Name of the stack")
     parser.add_argument("--guest-id", nargs="?", required=False, action="store",
                         help="Guest operating system identifier")
     parser.add_argument("--state-file-dir", nargs="?", required=False, action="store",
@@ -64,13 +64,13 @@ def parse_args():
                         choices=[True, False],
                         help="Disable certificate verification")
     parser.add_argument("--vc-datacenter", nargs="?", required=False, action="store",
-                        help="Datacenter where to deploy the virtual machines")
+                        help="Datacenter to use")
     parser.add_argument("--vc-datastore", nargs="?", required=False, action="store",
-                        help="Datastore where to store the virtual machines")
+                        help="Datastore to use")
     parser.add_argument("--vc-network", nargs="?", required=False, action="store",
                         help="Network for the virtual machines")
     parser.add_argument("--vc-resource-pool", nargs="?", required=False, action="store",
-                        help="Resource pool where to deploy the virtual machines")
+                        help="Resource pool for the virtual machines")
 
     # Admin
     parser.add_argument("--admin-prefix", nargs="?", required=False, action="store",
@@ -82,7 +82,7 @@ def parse_args():
 
     # Masters
     parser.add_argument("--master_count", nargs="?", required=False, action="store",
-                        help="Number of masters to deploy")
+                        help="Number of masters")
     parser.add_argument("--master-prefix", nargs="?", required=False, action="store",
                         help="Master node name prefix")
     parser.add_argument("--master-cpu", nargs="?", required=False, action="store",
@@ -92,7 +92,7 @@ def parse_args():
 
     # Workers
     parser.add_argument("--worker_count", nargs="?", required=False, action="store",
-                        help="Number of workers to deploy")
+                        help="Number of workers")
     parser.add_argument("--worker-prefix", nargs="?", required=False, action="store",
                         help="Worker node name prefix")
     parser.add_argument("--worker-cpu", nargs="?", required=False, action="store",
