@@ -210,7 +210,7 @@ def generate_config(user_opt):
                 'name': name,
                 'role': role,
                 'ram': ram,
-                'cpu': cpu,
+                'cpu': int(cpu),
             })
 
     append(config, user_opt["admin_count"], user_opt["admin_node"],
