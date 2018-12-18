@@ -209,7 +209,7 @@ def generate_config(user_opt):
             conf_dict[role]["vmguests"].append({
                 'name': name,
                 'role': role,
-                'ram': ram,
+                'ram': int(ram),
                 'cpu': int(cpu),
             })
 
