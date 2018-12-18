@@ -1,0 +1,44 @@
+#!/bin/bash
+set -eux
+
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+# environment file, provided as the first argument
+ENVIRONMENT=${1:-${ENVIRONMENT:-"$DIR/../environment.json"}}
+
+# ssh key file
+SSH_KEY=${SSH_KEY:-$DIR/../../misc-files/id_shared}
+
+# state file
+HV_STATE=${HV_STATE:-$DIR/../caasp-vmware.state}
+
+##############################################################
+
+SSH_ARGS="-i $SSH_KEY \
+         -o UserKnownHostsFile=/dev/null \
+         -o StrictHostKeyChecking=no"
+
+command -v jq >/dev/null || {
+    echo "ERROR: jq is not installed - please install jq to generate the environment.json file"
+    exit 1
+}
+
+# make sure the ssh key is readable
+[ -f "$SSH_KEY" ] || { echo "No ssh key found at $SSH_KEY" ; exit 1 ; }
+chmod 600 "$SSH_KEY"
+
+echo "Generating $ENVIRONMENT file"
+out=$(cat $HV_STATE | jq " .vmguests[] | { fqdn: .fqdn, addresses: {publicIpv4: .publicipv4, privateIpv4: .publicipv4}, role: .role, index: .index, status: \"unused\" }" | jq -s . | jq "{minions: .}")
+
+echo $out
+
+for node in $(echo "$out" | jq -r '.minions[] | select(.["minion_id"]? == null) | [.addresses.publicIpv4] | join(" ")'); do
+    machine_id=$(ssh root@$node $SSH_ARGS cat /etc/machine-id)
+    out=$(echo "$out" | jq ".minions | map(if (.addresses.publicIpv4 == \"$node\") then . + {\"minionID\": \"$machine_id\"} else . end) | {minions: .}")
+done
+
+master=$(echo "$out" | jq -r '[.minions[] | select(.role=="master")] | .[0] | .fqdn')
+
+out=$(echo "$out" | jq " . + {dashboardHost: .minions[] | select(.role==\"admin\") | .addresses.publicIpv4, dashboardExternalHost: .minions[] | select(.role==\"admin\") | .fqdn, kubernetesExternalHost: \"$master\"}")
+out=$(echo "$out" | jq " . + {sshKey: \"$SSH_KEY\", sshUser: \"root\"}")
+echo "$out" | tee "$ENVIRONMENT"
