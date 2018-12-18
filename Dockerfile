@@ -8,6 +8,7 @@ RUN pip3 install --no-cache-dir pyvmomi==6.7.0.2018.9 pyyaml
 
 WORKDIR /app
 
-USER nobody
+# uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+USER 65534
 
 ENTRYPOINT  [ "python3" ]
