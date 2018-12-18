@@ -1,15 +1,16 @@
 # misc
 #stack_name: pyvomi
-stack_name: cpi
+stack_name: 110k8s
 guest_id: sles12_64Guest
 
 # if not specified, current dir is used
-state_file_dir: /app/state_file
+#state_file_dir: /app/state_file
 
 # media
 media_type: vmdk
 media: lcavajani/SUSE-CaaS-Platform-3.0-for-VMware.x86_64-3.0.0-GM.vmdk
 #media: lcavajani/openSUSE-Tumbleweed-Kubic.x86_64-15.0-kubeadm-cri-o-VMware-Build10.5.vmdk
+#media: lcavajani/SUSE-CaaSP-4.0.x86_64-15.0-CaaSP-Stack-VMware-Build6.93.vmdk
 media_dir: lcavajani
 
 # Local or HTTP file use only with "pushimage" flag
@@ -36,21 +37,13 @@ admin_ram: 8192
 admin_cpu: 2
 
 # masters
-#master_count: 3
-#master_prefix: caasp-master
-#master_ram: 4096
-#master_cpu: 2
 master_count: 3
 master_prefix: caasp-master
-master_ram: 4096
-master_cpu: 2
+master_ram: 8192
+master_cpu: 4
 
 # workers
-#worker_count: 2
-#worker_prefix: caasp-worker
-#worker_ram: 2048
-#worker_cpu: 1
-worker_count: 6
+worker_count: 8
 worker_prefix: caasp-worker
-worker_ram: 8192
+worker_ram: 16384
 worker_cpu: 4
