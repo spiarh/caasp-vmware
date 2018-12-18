@@ -204,7 +204,7 @@ def generate_config(user_opt):
         conf_dict[role]["config"]["ds_cloud_iso_path"] = "caasp-{0}/{1}".format(
             stack_name, iso_filename)
 
-        for n in range(0, node_count):
+        for n in range(0, int(node_count)):
             name = node_name + "%03d" % n
             conf_dict[role]["vmguests"].append({
                 'name': name,
