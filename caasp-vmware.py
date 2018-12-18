@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import atexit
@@ -411,8 +411,10 @@ class CloudInit(object):
                     f.write(user_data)
 
                 Log.info("creating iso")
-                subprocess.run("genisoimage -output {0} -volid cidata -joliet -rock user-data meta-data >/dev/null 2>&1".format(
-                    iso_filename), cwd=path, shell=True, check=True)
+                # subprocess.run("genisoimage -output {0} -volid cidata -joliet -rock user-data meta-data >/dev/null 2>&1".format(
+                #     iso_filename), cwd=path, shell=True, check=True)
+                subprocess.call("genisoimage -output {0} -volid cidata -joliet -rock user-data meta-data >/dev/null 2>&1".format(
+                    iso_filename), cwd=path, shell=True)
                 Log.info("iso successfully created")
             except IOError as e:
                 Log.error("i/o error: {0}".format(e))
