@@ -81,7 +81,7 @@ def parse_args():
                         help="Admin RAM")
 
     # Masters
-    parser.add_argument("--master_count", nargs="?", required=False, action="store",
+    parser.add_argument("--master-count", nargs="?", required=False, action="store",
                         help="Number of masters")
     parser.add_argument("--master-prefix", nargs="?", required=False, action="store",
                         help="Master node name prefix")
@@ -91,7 +91,7 @@ def parse_args():
                         help="Master RAM")
 
     # Workers
-    parser.add_argument("--worker_count", nargs="?", required=False, action="store",
+    parser.add_argument("--worker-count", nargs="?", required=False, action="store",
                         help="Number of workers")
     parser.add_argument("--worker-prefix", nargs="?", required=False, action="store",
                         help="Worker node name prefix")
