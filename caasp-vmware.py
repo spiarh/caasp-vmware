@@ -1016,7 +1016,7 @@ def deploy(vsphere, conf):
         vm.deploy_from_template(create_template=False)
 
         # Retrieve Admin IP address
-        admin_ip = get_vm_ip(vm, timeout=120, sleep=20)
+        admin_ip = get_vm_ip(vm, timeout=240, sleep=20)
         Log.info("Admin node IP address: {0}".format(admin_ip))
 
     # Deploy Master and Worker nodes
@@ -1059,7 +1059,7 @@ def get_vm_ip(vm_obj, timeout, sleep):
     Log.info("waiting IP address for virtual machine: {0}".format(vm_obj.name))
     while vm_ip is None and count > 0:
         vm_ip = vm_obj.get_ip()
-        count -= 5
+        count -= sleep
         time.sleep(sleep)
         if vm_ip:
             return vm_ip
@@ -1100,7 +1100,7 @@ def generate_state_file(vsphere, conf):
             v = VMachine(vsphere, conf["parameters"],
                          conf[n]["config"], vm_config)
 
-            vm_ip = get_vm_ip(v, timeout=120, sleep=2)
+            vm_ip = get_vm_ip(v, timeout=240, sleep=2)
             vm_config["publicipv4"] = vm_ip
             vm_config["fqdn"] = socket.getfqdn(vm_ip)
             vm_config["image"] = os.path.splitext(
