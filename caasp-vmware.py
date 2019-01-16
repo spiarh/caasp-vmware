@@ -164,7 +164,10 @@ def generate_config(user_opt):
     config["parameters"]["vm_deploy_dir"] = "caasp-{0}".format(stack_name)
 
     # Used for the local deployment dir in /tmp 
-    stack_hash = hashlib.md5(stack_name.encode('utf-8')).hexdigest()
+    if stack_name:
+        stack_hash = hashlib.md5(stack_name.encode('utf-8')).hexdigest()
+    else:
+        stack_hash = None
 
     # The API needs a / to know it is a directory
     media_dir = config["parameters"]["media_dir"]
