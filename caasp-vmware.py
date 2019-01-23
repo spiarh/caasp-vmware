@@ -174,6 +174,10 @@ def generate_config(user_opt):
     if media_dir[-1] is not "/":
         config["parameters"]["media_dir"] = "{0}/".format(media_dir)
 
+    # Create media path
+    config["parameters"]["media"] = "{0}{1}".format(config["parameters"]["media_dir"],
+                                                    config["parameters"]["media"])
+
     def append(conf_dict, node_count, node_name, role, ram, cpu, cloud_init_file):
         """
         'master': {
