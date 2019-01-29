@@ -25,7 +25,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Process args")
 
     # Mandatory options
-    parser.add_argument("action", nargs="?", choices=["plan", "deploy", "destroy", "listimages", "pushimage"],
+    parser.add_argument("action", nargs="?", choices=["plan", "deploy", "destroy", "listimages", "pushimage", "deleteimage"],
                         help="Execution command")
     parser.add_argument("--var-file", nargs="?", required=False, action="store",
                         help="Deployment customization file")
@@ -1167,6 +1167,11 @@ def push_image(vsphere, src, remote_path):
     Datastore.upload_file(
         vsphere, src, "{0}{1}".format(remote_path, file_name))
 
+def delete_image(vsphere, remote_path):
+    """ Delete an image from the datastore """
+    Log.task("delete image from the datastore")
+    Datastore.delete_path(vsphere, remote_path)
+
 
 def main():
     args = parse_args()
@@ -1185,10 +1190,13 @@ def main():
         print("PLAN ACTION")
         pp = pprint.PrettyPrinter(indent=2)
         pp.pprint(conf)
-    elif action == "listimages":
-        list_images(vsphere, media_dir)
     elif action == "pushimage":
         push_image(vsphere, conf["parameters"]["source_media"], media_dir)
+    elif action == "listimages":
+        list_images(vsphere, media_dir)
+    elif action == "deleteimage":
+        # check
+        delete_image(vsphere, conf["parameters"]["media"])
 
 
 if __name__ == "__main__":

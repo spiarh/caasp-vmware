@@ -180,6 +180,14 @@ $ pyvomi caasp-vmware.py pushimage \
     --source-media /home/user/images/SUSE-CaaS-Platform-4.0-for-VMware.x86_64-4.0.0-GM.vmdk
 ```
 
+Delete an image from *media_dir*:
+
+```console
+$ pyvomi caasp-vmware.py deleteimage \
+    --media-dir image_dir \
+    --media SUSE-CaaS-Platform-3.0-for-VMware.x86_64-3.0.0-GM.vmdk
+```
+
 ## CLI syntax
 
 ```console
@@ -208,12 +216,12 @@ usage: caasp-vmware.py [-h] [--var-file [VAR_FILE]]
                        [--worker-count [WORKER_COUNT]]
                        [--worker-prefix [WORKER_PREFIX]]
                        [--worker-cpu [WORKER_CPU]] [--worker-ram [WORKER_RAM]]
-                       [{plan,deploy,destroy,listimages,pushimage}]
+                       [{plan,deploy,destroy,listimages,pushimage,deleteimage}]
 
 Process args
 
 positional arguments:
-  {plan,deploy,destroy,listimages,pushimage}
+  {plan,deploy,destroy,listimages,pushimage,deleteimage}
                         Execution command
 
 optional arguments:
