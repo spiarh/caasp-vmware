@@ -43,6 +43,8 @@ VC_PASSWORD=password
 EOF
 ```
 
+`genisoimage` must be installed where the script is running.
+
 ## Usage
 
 ### Docker
