@@ -1,0 +1,6 @@
+language: python
+
+install:
+        - pip3 install pyvmomi==6.7.0.2018.9 pyyaml pytest pylint
+
+script: pylint --errors-only *.py
