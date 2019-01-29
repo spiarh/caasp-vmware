@@ -1,0 +1,9 @@
+#!/bin/bash
+# Wrapper to run caasp-vmware.py in a virtualenv
+set -eu
+SDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export VENVDIR=${WORKSPACE:-~}/py3venv
+$VENVDIR/bin/pip3 install pyvmomi==6.7.0.2018.9 pyyaml
+
+# use unbuffered output
+stdbuf -i0 -o0 -e0  ${VENVDIR}/bin/python3 -u ${SDIR}/caasp-vmware.py $@
