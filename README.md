@@ -67,6 +67,10 @@ $ pip3 install --no-cache-dir pyvmomi==6.7.0.2018.9 pyyaml
 
 ## Options
 
+File option | CLI option | Action | Description | Default
+------------|------------|--------|-------------|--------
+`N/A` | --var-file | all | Deployment customization file | `./caasp-vmware.yaml`
+
 *misc*
 
 File option | CLI option | Action | Description | Default
