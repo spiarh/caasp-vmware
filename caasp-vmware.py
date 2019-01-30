@@ -5,10 +5,13 @@ import atexit
 import hashlib
 import ipaddress
 import json
+import operator
 import os
 import pprint
+from prettytable import PrettyTable
 from pyVim import connect
 from pyVmomi import vim
+import re
 import requests
 import shutil
 import socket
@@ -25,7 +28,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Process args")
 
     # Mandatory options
-    parser.add_argument("action", nargs="?", choices=["plan", "deploy", "destroy", "listimages", "pushimage", "deleteimage"],
+    parser.add_argument("action", nargs="?", choices=["plan", "deploy", "destroy", "status",
+                                                      "listimages", "pushimage", "deleteimage"],
                         help="Execution command")
     parser.add_argument("--var-file", nargs="?", required=False, action="store",
                         help="Deployment customization file")
@@ -100,6 +104,10 @@ def parse_args():
     parser.add_argument("--worker-ram", nargs="?", required=False, action="store",
                         help="Worker RAM")
 
+    # Status
+    parser.add_argument("--show-all", required=False, action="store_true",
+                        help="Show every VMs on the cluster, can take long time")
+
     args = parser.parse_args()
     return(args)
 
@@ -163,7 +171,7 @@ def generate_config(user_opt):
     stack_name = config["parameters"]["stack_name"]
     config["parameters"]["vm_deploy_dir"] = "caasp-{0}".format(stack_name)
 
-    # Used for the local deployment dir in /tmp 
+    # Used for the local deployment dir in /tmp
     if stack_name:
         stack_hash = hashlib.md5(stack_name.encode('utf-8')).hexdigest()
     else:
@@ -189,7 +197,7 @@ def generate_config(user_opt):
             'path': '/tmp/3772b45d891d0f9d14ddef20c3fd03db/master',
             'stack_hash': '3772b45d891d0f9d14ddef20c3fd03db',
             'stack_name': 'pyvomi'},
-          'vmguests': [ { 
+          'vmguests': [ {
             'cpu': 2,
             'name': 'caasp-master-pyvomi000',
             'ram': 4096,
@@ -739,7 +747,7 @@ class VMachine(object):
     def create_vm(self, isTemplate=False):
         """
         Create a VM, name is set to template_name
-        if isTemplate is set to True 
+        if isTemplate is set to True
         """
         # CheckVmConfig_Task(checkVmConfig)
 
@@ -1073,7 +1081,7 @@ def get_vm_ip(vm_obj, timeout, sleep):
 
 
 def generate_state_file(vsphere, conf):
-    """ 
+    """
     Generate deployment state file
     Print it to output and write it to local files
     """
@@ -1167,10 +1175,54 @@ def push_image(vsphere, src, remote_path):
     Datastore.upload_file(
         vsphere, src, "{0}{1}".format(remote_path, file_name))
 
+
 def delete_image(vsphere, remote_path):
     """ Delete an image from the datastore """
     Log.task("delete image from the datastore")
     Datastore.delete_path(vsphere, remote_path)
+
+
+def status(vsphere, conf):
+    """ Retrieve info about VMs and Templates """
+    Log.task("show virtual machines and templates")
+    datacenter = vsphere.get_datacenter()
+
+    vm_status = PrettyTable()
+    vm_status.field_names = ["Name",
+                             "Hostname",
+                             "IP Address",
+                             "State",
+                             "VMware Tools",
+                             "Template"]
+
+    regex = re.compile("({0})|({1})|({2})".format(conf["parameters"]["admin_node"],
+                                                  conf["parameters"]["master_node"],
+                                                  conf["parameters"]["worker_node"],))
+
+    show_all = conf["parameters"].get("show_all", None)
+    vms = []
+
+    for vm in datacenter.vmFolder.childEntity:
+        try:
+            if re.search(regex, vm.name):
+                vms.append(vm)
+            if show_all:
+                if vm.guest:  # make sure it is a vm
+                    vms.append(vm)
+        # avoid failing as there is no attribute to differenciate
+        # betwwen a Folder, vApp and a VirtualMachine
+        except AttributeError:
+            pass
+
+    for vm in vms:
+        vm_status.add_row([vm.name,
+                           vm.guest.hostName,
+                           vm.guest.ipAddress,
+                           vm.guest.guestState,
+                           vm.guest.toolsRunningStatus,
+                           vm.config.template])
+
+    print(vm_status.get_string(sort_key=operator.itemgetter(6), sortby="Template"))
 
 
 def main():
@@ -1190,12 +1242,13 @@ def main():
         print("PLAN ACTION")
         pp = pprint.PrettyPrinter(indent=2)
         pp.pprint(conf)
+    elif action == "status":
+        status(vsphere, conf)
     elif action == "pushimage":
         push_image(vsphere, conf["parameters"]["source_media"], media_dir)
     elif action == "listimages":
         list_images(vsphere, media_dir)
     elif action == "deleteimage":
-        # check
         delete_image(vsphere, conf["parameters"]["media"])
 
 
