@@ -64,7 +64,7 @@ $ alias pyvomi="sudo docker run -ti --rm --name pyvomi \
 ### Python virtualenv
 
 ```console
-$ pip3 install --no-cache-dir pyvmomi==6.7.0.2018.9 pyyaml
+$ pip install -r requirements.txt
 ```
 
 ## Options
@@ -136,29 +136,49 @@ File option | CLI option | Action | Description | Default
 
 ## CLI Example
 
+### deploy
+
 We assume you are working in the repository directory.
 
 Deploy with the default parameters:
 
 ```console
-$ pyvomi caasp-vmware.py deploy -stack_name example
-```
-
-Destroy the deployment:
-
-```console
-$ pyvomi caasp-vmware.py destroy -stack_name example
+$ pyvomi caasp-vmware.py deploy --stack-name example
 ```
 
 Deploy 3 masters, 10 workers, override default RAM and CPU for workers:
 
 ```console
-$ pyvomi caasp-vmware.py deploy -stack_name example \
+$ pyvomi caasp-vmware.py deploy --stack-name example \
    --master-count 3 \
    --worker-count 10 \
    --worker-ram 16384 \
    --worker-cpu 4
 ```
+
+### status
+
+Show the status of a deployed stack:
+
+```console
+$ pyvomi caasp-vmware.py status --stack-name example
+```
+
+Show the status of every virtual machines in the VMware cluster:
+
+```console
+$ pyvomi caasp-vmware.py status --show-all
+```
+
+### destroy
+
+Destroy the deployment:
+
+```console
+$ pyvomi caasp-vmware.py destroy --stack-name example
+```
+
+### image management
 
 List images in the image directory *media_dir*
 
@@ -216,12 +236,12 @@ usage: caasp-vmware.py [-h] [--var-file [VAR_FILE]]
                        [--worker-count [WORKER_COUNT]]
                        [--worker-prefix [WORKER_PREFIX]]
                        [--worker-cpu [WORKER_CPU]] [--worker-ram [WORKER_RAM]]
-                       [{plan,deploy,destroy,listimages,pushimage,deleteimage}]
+                       [{plan,deploy,destroy,status,listimages,pushimage,deleteimage}]
 
 Process args
 
 positional arguments:
-  {plan,deploy,destroy,listimages,pushimage,deleteimage}
+  {plan,deploy,destroy,status,listimages,pushimage,deleteimage}
                         Execution command
 
 optional arguments:
@@ -268,7 +288,7 @@ optional arguments:
                         Admin CPUs
   --admin-ram [ADMIN_RAM]
                         Admin RAM
-  --master_count [MASTER_COUNT]
+  --master-count [MASTER_COUNT]
                         Number of masters
   --master-prefix [MASTER_PREFIX]
                         Master node name prefix
@@ -276,7 +296,7 @@ optional arguments:
                         Master CPUs
   --master-ram [MASTER_RAM]
                         Master RAM
-  --worker_count [WORKER_COUNT]
+  --worker-count [WORKER_COUNT]
                         Number of workers
   --worker-prefix [WORKER_PREFIX]
                         Worker node name prefix
@@ -284,4 +304,5 @@ optional arguments:
                         Worker CPUs
   --worker-ram [WORKER_RAM]
                         Worker RAM
+  --show-all            Show every VMs on the cluster, can take long time
 ```
