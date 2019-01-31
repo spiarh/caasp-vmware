@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -27,7 +27,7 @@ command -v jq >/dev/null || {
 [ -f "$SSH_KEY" ] || { echo "No ssh key found at $SSH_KEY" ; exit 1 ; }
 chmod 600 "$SSH_KEY"
 
-echo "Generating $ENVIRONMENT file"
+echo "Generating $ENVIRONMENT file using state file $HV_STATE and ssh key $SSH_KEY"
 out=$(cat $HV_STATE | jq " .vmguests[] | { fqdn: .fqdn, addresses: {publicIpv4: .publicipv4, privateIpv4: .publicipv4}, role: .role, index: .index, status: \"unused\" }" | jq -s . | jq "{minions: .}")
 
 echo $out
