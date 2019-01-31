@@ -10,7 +10,6 @@ Deploy CaaSP on VMware vSphere
 
 TODO:
 
-* [enhancement] Create plan action to check the deployment before actually deploy
 * [enhancement] Change project structure
 * [enhancement] Improve outputs (color, formating and duration)
 * [documentation] List vcenter privileges required for a user
@@ -72,6 +71,7 @@ $ pip install -r requirements.txt
 File option | CLI option | Action | Description | Default
 ------------|------------|--------|-------------|--------
 `N/A` | --var-file | all | Deployment customization file | `./caasp-vmware.yaml`
+`N/A` | --show-all | status | Show every VMs on the cluster | `N/A`
 
 *misc*
 
