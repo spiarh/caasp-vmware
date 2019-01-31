@@ -1,6 +1,6 @@
 # misc
 #stack_name: pyvomi
-stack_name: 110k8s
+stack_name: 
 guest_id: sles12_64Guest
 
 # if not specified, current dir is used
@@ -8,11 +8,11 @@ guest_id: sles12_64Guest
 
 # media
 media_type: vmdk
-media_dir: lcavajani
-media: SUSE-CaaS-Platform-3.0-for-VMware.x86_64-3.0.0-GM.vmdk
+media_dir: 
+media: 
 
 # Local or HTTP file use only with "pushimage" flag
-source_media: SUSE-CaaS-Platform-3.0-for-VMware.x86_64-3.0.0-GM.vmdk
+source_media:
 
 # TODO: add disk size for iso
 #disk_size: 40

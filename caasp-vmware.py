@@ -179,8 +179,9 @@ def generate_config(user_opt):
 
     # The API needs a / to know it is a directory
     media_dir = config["parameters"]["media_dir"]
-    if media_dir[-1] is not "/":
-        config["parameters"]["media_dir"] = "{0}/".format(media_dir)
+    if media_dir:
+        if media_dir[-1] is not "/":
+            config["parameters"]["media_dir"] = "{0}/".format(media_dir)
 
     # Create media path
     config["parameters"]["media"] = "{0}{1}".format(config["parameters"]["media_dir"],
